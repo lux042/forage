@@ -18,6 +18,9 @@ struct AddVisitView: View {
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
     @State private var selectedPhotoDataList: [Data] = []
 
+    @State private var isLoadingPhotos = false
+    @State private var photoError: String?
+
     var body: some View {
         NavigationStack {
             Form {
@@ -55,10 +58,24 @@ struct AddVisitView: View {
                         maxSelectionCount: 10,
                         matching: .images
                     ) {
-                        Label("Choose Photos", systemImage: "photo.on.rectangle")
+                        Label("Add photos", systemImage: "photo.on.rectangle.angled")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.vertical, 8)
                     }
 
+                    if isLoadingPhotos {
+                        ProgressView("Preparing photos…")
+                    }
+                    if let photoError {
+                        Text(photoError)
+                            .font(.footnote)
+                            .foregroundStyle(Color.accentOrange)
+                    }
                     if !selectedPhotoDataList.isEmpty {
+                        Text("\(selectedPhotoDataList.count) photo(s) ready to save")
+                            .font(.caption)
+                            .foregroundStyle(Color.forageHeading)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
                                 ForEach(Array(selectedPhotoDataList.enumerated()), id: \.offset) { _, data in
@@ -93,24 +110,42 @@ struct AddVisitView: View {
                     Button("Save") {
                         saveVisit()
                     }
+                    .disabled(isLoadingPhotos)
                 }
             }
-            .task(id: selectedPhotoItems) {
-                await loadSelectedPhotos()
+            .onChange(of: selectedPhotoItems) { _, _ in
+                Task { await loadSelectedPhotos() }
             }
         }
     }
 
+    @MainActor
     private func loadSelectedPhotos() async {
+        isLoadingPhotos = true
+        photoError = nil
         var loadedData: [Data] = []
+        var failures = 0
 
         for item in selectedPhotoItems {
-            if let data = try? await item.loadTransferable(type: Data.self) {
-                loadedData.append(data)
+            do {
+                guard let data = try await item.loadTransferable(type: Data.self),
+                      let image = UIImage(data: data),
+                      let jpeg = image.jpegData(compressionQuality: 0.75) else {
+                    failures += 1
+                    continue
+                }
+                loadedData.append(jpeg)
+            } catch {
+                failures += 1
+                print("Photo import error:", error)
             }
         }
 
         selectedPhotoDataList = loadedData
+        if failures > 0 {
+            photoError = "Couldn't load \(failures) photo(s). Try another image or add photos to the simulator's Photos library."
+        }
+        isLoadingPhotos = false
     }
 
     private func saveVisit() {
