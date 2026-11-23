@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# Xcode generated and user-specific files
+DerivedData/
+build/
+*.xcuserstate
+**/xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Swift Package Manager local state
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+.build/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+.venv/
