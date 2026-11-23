@@ -74,12 +74,3 @@ In the iOS Simulator, use **Features → Location** to simulate a location near 
 - [ ] Test notification and geofencing behavior across devices
 - [ ] Prepare for a broader release
 
-## Design
-
-Forage uses a warm visual language inspired by forests and natural textures: deep green, sage, cream, clay, and gold. The goal is to make saving a restaurant feel like keeping a small collection of places and experiences, rather than managing another checklist.
-
-## About
-
-An independent iOS development project by [lux042](https://github.com/lux042).
-
-**Source code:** [github.com/lux042/forage](https://github.com/lux042/forage)
