@@ -29,7 +29,7 @@ struct SavedView: View {
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text(restaurant.name)
                                             .font(.headline)
-                                            .foregroundStyle(Color.primaryBlue)
+                                            .foregroundStyle(Color.forestGreen)
 
                                         Text(restaurant.address)
                                             .font(.subheadline)
@@ -70,7 +70,7 @@ struct SavedView: View {
                 }
             }
             .navigationTitle("Saved Spots")
-            .tint(.primaryBlue)
+            .tint(.forestGreen)
         }
     }
 
