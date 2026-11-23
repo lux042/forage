@@ -28,7 +28,7 @@ struct ExploreView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Find your next favorite")
-                            .font(.title3.bold())
+                            .font(.system(.title2, design: .serif, weight: .bold))
                             .foregroundStyle(Color.forageHeading)
                         Text("A little exploring goes a long way.")
                             .font(.subheadline)
@@ -129,49 +129,71 @@ struct ExploreView: View {
 
     private var resultsList: some View {
         List {
-            ForEach(searchService.results) { result in
-                HStack(alignment: .top, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(result.name)
-                            .font(.headline)
+            Section {
+                ForEach(searchService.results) { result in
+                    HStack(alignment: .center, spacing: 14) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.forageSage.opacity(0.18))
+                            Image(systemName: "fork.knife")
+                                .font(.title2)
+                                .foregroundStyle(Color.forageHeading)
+                        }
+                        .frame(width: 58, height: 62)
 
-                        Text(result.address)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 7) {
+                            Text(result.name)
+                                .font(.system(.headline, design: .serif))
+                                .foregroundStyle(Color.forageHeading)
+                                .fixedSize(horizontal: false, vertical: true)
 
-                        if let phone = result.phoneNumber, !phone.isEmpty {
-                            Text(phone)
+                            Label(result.address, systemImage: "mappin")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
+                                .lineLimit(2)
+
+                            if let phone = result.phoneNumber, !phone.isEmpty {
+                                Label(phone, systemImage: "phone")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
-                    }
 
-                    Spacer()
+                        Spacer(minLength: 0)
 
-                    Button {
-                        toggleSaved(result)
-                    } label: {
-                        let key = resultKey(for: result)
-
-                        ZStack {
-                            Circle()
-                                .fill(isSaved(result) ? Color.accentGold.opacity(0.18) : Color.forageSage.opacity(0.3))
-                                .frame(width: 40, height: 40)
-
-                            Image(systemName: isSaved(result) ? "star.fill" : "star")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(isSaved(result) ? Color.accentGold : Color.forageHeading)
-                                .scaleEffect(animatingKeys.contains(key) ? 1.28 : 1.0)
-                                .animation(.spring(response: 0.28, dampingFraction: 0.45), value: animatingKeys.contains(key))
+                        Button {
+                            toggleSaved(result)
+                        } label: {
+                            let key = resultKey(for: result)
+                            Image(systemName: isSaved(result) ? "bookmark.fill" : "bookmark")
+                                .font(.system(size: 19, weight: .semibold))
+                                .foregroundStyle(isSaved(result) ? Color.accentOrange : Color.forageHeading)
+                                .frame(width: 44, height: 44)
+                                .background(Color.forageSage.opacity(0.13), in: Circle())
+                                .scaleEffect(animatingKeys.contains(key) ? 1.15 : 1)
+                                .animation(.spring(response: 0.28, dampingFraction: 0.5), value: animatingKeys.contains(key))
                         }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(isSaved(result) ? "Remove \(result.name) from saved" : "Save \(result.name)")
                     }
-                    .buttonStyle(.plain)
+                    .padding(.vertical, 12)
+                    .listRowBackground(Color.forageCard)
+                    .listRowSeparatorTint(Color.forageSage.opacity(0.2))
                 }
-                .padding(.vertical, 6)
+            } header: {
+                HStack {
+                    Text("Places to discover")
+                        .font(.system(.headline, design: .serif))
+                    Spacer()
+                    Text("\(searchService.results.count) found")
+                        .font(.caption)
+                }
+                .textCase(nil)
+                .foregroundStyle(Color.forageHeading)
             }
         }
         .listStyle(.insetGrouped)
-        .environment(\.defaultMinListRowHeight, 62)
+        .environment(\.defaultMinListRowHeight, 86)
         .scrollContentBackground(.hidden)
         .background(Color.backgroundSoft)
     }
