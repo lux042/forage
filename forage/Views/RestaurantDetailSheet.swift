@@ -26,7 +26,7 @@ struct RestaurantDetailView: View {
 
                     Text(restaurant.name)
                         .font(.system(.largeTitle, design: .serif, weight: .bold))
-                        .foregroundStyle(Color.forestGreen)
+                        .foregroundStyle(Color.forageHeading)
                         .fixedSize(horizontal: false, vertical: true)
 
                     Label(restaurant.address, systemImage: "mappin.circle")
@@ -40,7 +40,7 @@ struct RestaurantDetailView: View {
                               systemImage: "book.closed")
                     }
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(Color.forestGreen)
+                    .foregroundStyle(Color.forageHeading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -53,7 +53,7 @@ struct RestaurantDetailView: View {
                     )
                 )) {
                     Marker(restaurant.name, coordinate: restaurant.coordinate)
-                        .tint(Color.forestGreen)
+                        .tint(Color.forageAction)
                 }
                 .frame(height: 210)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -71,7 +71,7 @@ struct RestaurantDetailView: View {
                     }
 
                     Toggle("Mark as visited", isOn: $restaurant.isVisited)
-                        .tint(Color.forestGreen)
+                        .tint(Color.forageAction)
                         .onChange(of: restaurant.isVisited) { _, _ in
                             do { try modelContext.save() }
                             catch { print("Failed to update visited status:", error) }
@@ -79,7 +79,7 @@ struct RestaurantDetailView: View {
                 }
                 .padding(18)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .background(Color.forageCard)
                 .clipShape(RoundedRectangle(cornerRadius: 18))
 
                 Button {
@@ -91,14 +91,14 @@ struct RestaurantDetailView: View {
                         .padding(.vertical, 8)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color.forestGreen)
+                .tint(Color.forageAction)
                 .controlSize(.large)
 
                 VStack(alignment: .leading, spacing: 14) {
                     HStack {
                         Text("Your visits")
                             .font(.system(.title2, design: .serif, weight: .bold))
-                            .foregroundStyle(Color.forestGreen)
+                            .foregroundStyle(Color.forageHeading)
                         Spacer()
                         Text("\(sortedVisits.count)")
                             .font(.subheadline.weight(.semibold))
@@ -118,7 +118,7 @@ struct RestaurantDetailView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(20)
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
+                        .background(Color.forageCard)
                         .clipShape(RoundedRectangle(cornerRadius: 18))
                     } else {
                         ForEach(sortedVisits) { visit in
@@ -132,7 +132,7 @@ struct RestaurantDetailView: View {
         .background(Color.backgroundSoft.ignoresSafeArea())
         .navigationTitle("Restaurant")
         .navigationBarTitleDisplayMode(.inline)
-        .tint(Color.forestGreen)
+        .tint(Color.forageAction)
         .sheet(isPresented: $showingAddVisit) {
             AddVisitView(restaurant: restaurant)
         }
