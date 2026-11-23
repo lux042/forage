@@ -39,7 +39,7 @@ struct VisitCardView: View {
                         Image(systemName: star <= visit.rating ? "star.fill" : "star")
                     }
                 }
-                .foregroundStyle(.yellow)
+                .foregroundStyle(Color.accentGold)
             }
 
             if !visit.orderDetails.isEmpty {
@@ -61,7 +61,7 @@ struct VisitCardView: View {
             .foregroundStyle(visit.wouldReturn ? .green : .red)
         }
         .padding()
-        .background(.thinMaterial)
+        .background(Color.forageCard)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
