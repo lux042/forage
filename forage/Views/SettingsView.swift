@@ -52,6 +52,9 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .scrollContentBackground(.hidden)
+            .background(Color.backgroundSoft.ignoresSafeArea())
+            .tint(Color.forageAction)
         }
     }
 
