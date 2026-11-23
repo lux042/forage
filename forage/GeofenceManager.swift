@@ -45,7 +45,7 @@ final class GeofenceManager: NSObject, ObservableObject, CLLocationManagerDelega
 
         do {
             let allRestaurants = try modelContext.fetch(FetchDescriptor<Restaurant>())
-            let restaurants = allRestaurants.filter { $0.monitoringEnabled }
+            let restaurants = allRestaurants.filter { $0.isMonitoringEnabled }
 
             for region in manager.monitoredRegions {
                 manager.stopMonitoring(for: region)
@@ -77,7 +77,7 @@ final class GeofenceManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func startMonitoring(restaurant: Restaurant) {
-        guard restaurant.monitoringEnabled else { return }
+        guard restaurant.isMonitoringEnabled else { return }
 
         let center = CLLocationCoordinate2D(
             latitude: restaurant.latitude,
