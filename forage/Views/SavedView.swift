@@ -15,9 +15,9 @@ struct SavedView: View {
 
                 if restaurants.isEmpty {
                     ContentUnavailableView(
-                        "No Saved Restaurants",
-                        systemImage: "star",
-                        description: Text("Save restaurants from Explore to start building your list.")
+                        "Your next discovery awaits",
+                        systemImage: "leaf",
+                        description: Text("Save restaurants from Explore to grow your wish list.")
                     )
                 } else {
                     List {
@@ -29,7 +29,7 @@ struct SavedView: View {
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text(restaurant.name)
                                             .font(.headline)
-                                            .foregroundStyle(.primary)
+                                            .foregroundStyle(Color.primaryBlue)
 
                                         Text(restaurant.address)
                                             .font(.subheadline)
@@ -66,10 +66,10 @@ struct SavedView: View {
                     }
                     .scrollContentBackground(.hidden)
                     .background(Color.backgroundSoft)
-                    .listStyle(.plain)
+                    .listStyle(.insetGrouped)
                 }
             }
-            .navigationTitle("Saved")
+            .navigationTitle("Saved Spots")
             .tint(.primaryBlue)
         }
     }
