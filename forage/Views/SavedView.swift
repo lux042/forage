@@ -29,7 +29,7 @@ struct SavedView: View {
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text(restaurant.name)
                                             .font(.headline)
-                                            .foregroundStyle(Color.forestGreen)
+                                            .foregroundStyle(Color.forageHeading)
 
                                         Text(restaurant.address)
                                             .font(.subheadline)
@@ -67,10 +67,11 @@ struct SavedView: View {
                     .scrollContentBackground(.hidden)
                     .background(Color.backgroundSoft)
                     .listStyle(.insetGrouped)
+                    .environment(\.defaultMinListRowHeight, 68)
                 }
             }
             .navigationTitle("Saved Spots")
-            .tint(.forestGreen)
+            .tint(Color.forageAction)
         }
     }
 
