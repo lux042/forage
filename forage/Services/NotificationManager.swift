@@ -4,10 +4,11 @@ import UserNotifications
 final class NotificationManager {
     func requestPermission() async {
         do {
-            try await UNUserNotificationCenter.current()
+            let granted = try await UNUserNotificationCenter.current()
                 .requestAuthorization(options: [.alert, .sound, .badge])
+            print("🔔 Notification permission granted: \(granted)")
         } catch {
-            print("Notification permission error: \(error)")
+            print("🔔 Notification permission error: \(error)")
         }
     }
 
@@ -18,13 +19,22 @@ final class NotificationManager {
         content.sound = .default
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-
         let request = UNNotificationRequest(
             identifier: "nearby-\(restaurant.id.uuidString)",
             content: content,
             trigger: trigger
         )
 
-        UNUserNotificationCenter.current().add(request)
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            print("🔔 Authorization status: \(settings.authorizationStatus.rawValue)")
+            center.add(request) { error in
+                if let error {
+                    print("🔔 Failed to schedule nearby notification for \(restaurant.name): \(error)")
+                } else {
+                    print("🔔 Scheduled nearby notification for \(restaurant.name)")
+                }
+            }
+        }
     }
 }
