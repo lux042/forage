@@ -39,7 +39,7 @@ struct AddVisitView: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(Color.accentGold)
                 }
 
                 Section("Review") {
@@ -78,6 +78,9 @@ struct AddVisitView: View {
                 }
             }
             .navigationTitle("Add Visit")
+            .scrollContentBackground(.hidden)
+            .background(Color.backgroundSoft.ignoresSafeArea())
+            .tint(Color.forageAction)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
