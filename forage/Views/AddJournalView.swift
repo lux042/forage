@@ -13,7 +13,7 @@ struct JournalView: View {
             Group {
                 if visits.isEmpty {
                     ContentUnavailableView(
-                        "Your field notes start here",
+                        "Your journal starts here",
                         systemImage: "book.closed",
                         description: Text("Log a visit from a saved restaurant to remember what you loved.")
                     )
@@ -23,7 +23,7 @@ struct JournalView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Your food journal")
                                     .font(.title2.bold())
-                                    .foregroundStyle(Color.forestGreen)
+                                    .foregroundStyle(Color.forageHeading)
                                 Text("\(visits.count) \(visits.count == 1 ? "memory" : "memories") collected")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
@@ -37,7 +37,7 @@ struct JournalView: View {
                                 HStack {
                                     Label(visit.restaurant?.name ?? "Restaurant", systemImage: "leaf")
                                         .font(.headline)
-                                        .foregroundStyle(Color.forestGreen)
+                                        .foregroundStyle(Color.forageHeading)
                                     Spacer()
                                     Menu {
                                         Button("Edit entry", systemImage: "pencil") {
@@ -49,7 +49,7 @@ struct JournalView: View {
                                     } label: {
                                         Image(systemName: "ellipsis.circle")
                                             .font(.title3)
-                                            .foregroundStyle(Color.forestGreen)
+                                            .foregroundStyle(Color.forageHeading)
                                             .frame(width: 44, height: 44)
                                             .contentShape(Rectangle())
                                     }
@@ -59,12 +59,12 @@ struct JournalView: View {
                                 VisitCardView(visit: visit)
                             }
                             .padding(.vertical, 6)
-                            .listRowBackground(Color(uiColor: .secondarySystemGroupedBackground))
+                            .listRowBackground(Color.forageCard)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button("Edit", systemImage: "pencil") {
                                     editingVisit = visit
                                 }
-                                .tint(.forestGreen)
+                                .tint(Color.forageAction)
 
                                 Button("Delete", systemImage: "trash", role: .destructive) {
                                     deletingVisit = visit
@@ -78,7 +78,7 @@ struct JournalView: View {
             }
             .background(Color.backgroundSoft.ignoresSafeArea())
             .navigationTitle("Foraged")
-            .tint(.forestGreen)
+            .tint(Color.forageAction)
             .sheet(item: $editingVisit) { visit in
                 EditVisitView(visit: visit)
             }
@@ -170,7 +170,7 @@ private struct EditVisitView: View {
                     }
                 }
 
-                Section("Field notes") {
+                Section("Notes") {
                     TextField("Your notes", text: $notes, axis: .vertical)
                         .lineLimit(4...8)
                     Toggle("Would return", isOn: $wouldReturn)
@@ -186,7 +186,7 @@ private struct EditVisitView: View {
             }
             .navigationTitle("Edit Visit")
             .navigationBarTitleDisplayMode(.inline)
-            .tint(.forestGreen)
+            .tint(Color.forageAction)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
