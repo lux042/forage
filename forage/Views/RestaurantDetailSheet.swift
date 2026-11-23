@@ -18,7 +18,7 @@ struct RestaurantDetailView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "leaf.fill")
                             .foregroundStyle(Color.forageSage)
-                        Text("YOUR FIELD GUIDE")
+                        Text("A PLACE TO REMEMBER")
                             .font(.caption.weight(.bold))
                             .tracking(2)
                             .foregroundStyle(Color.forageSage)
@@ -85,7 +85,7 @@ struct RestaurantDetailView: View {
                 Button {
                     showingAddVisit = true
                 } label: {
-                    Label("Add a field note", systemImage: "square.and.pencil")
+                    Label("Log a visit", systemImage: "square.and.pencil")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
@@ -96,7 +96,7 @@ struct RestaurantDetailView: View {
 
                 VStack(alignment: .leading, spacing: 14) {
                     HStack {
-                        Text("Field notes")
+                        Text("Your visits")
                             .font(.system(.title2, design: .serif, weight: .bold))
                             .foregroundStyle(Color.forestGreen)
                         Spacer()
@@ -130,7 +130,7 @@ struct RestaurantDetailView: View {
             .padding(18)
         }
         .background(Color.backgroundSoft.ignoresSafeArea())
-        .navigationTitle("Field Guide")
+        .navigationTitle("Restaurant")
         .navigationBarTitleDisplayMode(.inline)
         .tint(Color.forestGreen)
         .sheet(isPresented: $showingAddVisit) {
