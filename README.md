@@ -1,4 +1,4 @@
-# Forage 🌿
+# Forage 
 
 **Discover restaurants worth remembering.**
 
