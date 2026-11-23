@@ -19,13 +19,19 @@ Built with **SwiftUI**, Forage brings restaurant discovery, saved spots, and a d
 
 ## Screenshots
 
-Screenshots are being prepared. The most useful views to showcase will be:
+A look at Forage's restaurant discovery, saved places, and dining journal.
 
-| Explore | Saved spots | Restaurant details | Visit journal |
-| --- | --- | --- | --- |
-| Map and discovery cards | Places to try | Restaurant information and visit history | Ratings, notes, and photos |
+| Explore | Saved places |
+| --- | --- |
+| ![Forage Explore screen](docs/explore.png) | ![Forage Saved screen](docs/saved.png) |
+| Discover restaurants | Keep a list of places to try |
 
-See [the screenshot guide](docs/SCREENSHOTS.md) for the planned gallery and capture instructions. Screenshots will be embedded here once exported from the simulator.
+| Restaurant details | Visit journal |
+| --- | --- |
+| ![Forage restaurant details screen](docs/details.png) | ![Forage journal screen](docs/journal.png) |
+| Review restaurant information | Record dining experiences |
+
+See the [screenshot guide](docs/SCREENSHOTS.md) for additional context.
 
 ## Built with
 
@@ -69,7 +75,8 @@ In the iOS Simulator, use **Features → Location** to simulate a location near 
 - [x] Establish a consistent, nature-inspired design system
 - [ ] Verify photo import and persistence on device
 - [ ] Commit and verify a clean-clone Xcode build
-- [ ] Add real screenshots and a short demo
+- [x] Add real screenshots to the README
+- [ ] Record a short demo
 - [ ] Improve accessibility and empty/error states
 - [ ] Test notification and geofencing behavior across devices
 - [ ] Prepare for a broader release
