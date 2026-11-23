@@ -10,6 +10,7 @@ struct ExploreView: View {
     @Query(sort: \Restaurant.createdAt, order: .reverse) private var savedRestaurants: [Restaurant]
 
     @State private var query = ""
+    @State private var showMap = true
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var animatingKeys: Set<String> = []
 
@@ -24,7 +25,27 @@ struct ExploreView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                mapSection
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Find your next favorite")
+                            .font(.title3.bold())
+                            .foregroundStyle(Color.primaryBlue)
+                        Text("A little exploring goes a long way.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Button {
+                        withAnimation { showMap.toggle() }
+                    } label: {
+                        Label(showMap ? "List" : "Map", systemImage: showMap ? "list.bullet" : "map")
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+
+                if showMap { mapSection }
 
                 Group {
                     if searchService.isLoading {
@@ -36,9 +57,9 @@ struct ExploreView: View {
                         }
                     } else if searchService.results.isEmpty {
                         ContentUnavailableView(
-                            "Find Restaurants",
-                            systemImage: "fork.knife",
-                            description: Text("Search by name or tap Near Me.")
+                            "The search starts here",
+                            systemImage: "leaf",
+                            description: Text("Search for a restaurant or tap Near Me to explore.")
                         )
                     } else {
                         resultsList
@@ -48,7 +69,7 @@ struct ExploreView: View {
             .background(Color.backgroundSoft.ignoresSafeArea())
             .navigationTitle("Explore")
             .tint(.primaryBlue)
-            .searchable(text: $query, prompt: "Search restaurants")
+            .searchable(text: $query, prompt: "Name, cuisine, or neighborhood")
             .onSubmit(of: .search) {
                 Task {
                     await searchService.search(query: query, near: currentRegion)
@@ -86,7 +107,7 @@ struct ExploreView: View {
                 )
 
                 Marker(result.name, coordinate: coordinate)
-                    .tint(.orange)
+                    .tint(.primaryBlue)
             }
         }
         .mapControls {
@@ -134,12 +155,12 @@ struct ExploreView: View {
 
                         ZStack {
                             Circle()
-                                .fill(isSaved(result) ? Color.yellow.opacity(0.18) : Color.gray.opacity(0.12))
+                                .fill(isSaved(result) ? Color.accentGold.opacity(0.18) : Color.primaryBlue.opacity(0.08))
                                 .frame(width: 40, height: 40)
 
                             Image(systemName: isSaved(result) ? "star.fill" : "star")
                                 .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(isSaved(result) ? Color.yellow : Color.gray)
+                                .foregroundStyle(isSaved(result) ? Color.accentGold : Color.primaryBlue)
                                 .scaleEffect(animatingKeys.contains(key) ? 1.28 : 1.0)
                                 .animation(.spring(response: 0.28, dampingFraction: 0.45), value: animatingKeys.contains(key))
                         }
@@ -149,7 +170,7 @@ struct ExploreView: View {
                 .padding(.vertical, 6)
             }
         }
-        .listStyle(.plain)
+        .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color.backgroundSoft)
     }
