@@ -15,7 +15,11 @@ final class Restaurant {
     var isSaved: Bool
     var isVisited: Bool
     var createdAt: Date
-    var monitoringEnabled: Bool
+    // Optional on disk so restaurants saved before geofencing can migrate safely.
+    var monitoringEnabled: Bool?
+
+    // Existing restaurants without this field should remain eligible for alerts.
+    var isMonitoringEnabled: Bool { monitoringEnabled ?? true }
 
     var lastAlertedAt: Date?
 
