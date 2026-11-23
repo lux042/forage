@@ -23,7 +23,7 @@ struct JournalView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Your food journal")
                                     .font(.title2.bold())
-                                    .foregroundStyle(Color.primaryBlue)
+                                    .foregroundStyle(Color.forestGreen)
                                 Text("\(visits.count) \(visits.count == 1 ? "memory" : "memories") collected")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
@@ -37,7 +37,7 @@ struct JournalView: View {
                                 HStack {
                                     Label(visit.restaurant?.name ?? "Restaurant", systemImage: "leaf")
                                         .font(.headline)
-                                        .foregroundStyle(Color.primaryBlue)
+                                        .foregroundStyle(Color.forestGreen)
                                     Spacer()
                                     Menu {
                                         Button("Edit entry", systemImage: "pencil") {
@@ -49,7 +49,7 @@ struct JournalView: View {
                                     } label: {
                                         Image(systemName: "ellipsis.circle")
                                             .font(.title3)
-                                            .foregroundStyle(Color.primaryBlue)
+                                            .foregroundStyle(Color.forestGreen)
                                             .frame(width: 44, height: 44)
                                             .contentShape(Rectangle())
                                     }
@@ -64,7 +64,7 @@ struct JournalView: View {
                                 Button("Edit", systemImage: "pencil") {
                                     editingVisit = visit
                                 }
-                                .tint(.primaryBlue)
+                                .tint(.forestGreen)
 
                                 Button("Delete", systemImage: "trash", role: .destructive) {
                                     deletingVisit = visit
@@ -78,7 +78,7 @@ struct JournalView: View {
             }
             .background(Color.backgroundSoft.ignoresSafeArea())
             .navigationTitle("Foraged")
-            .tint(.primaryBlue)
+            .tint(.forestGreen)
             .sheet(item: $editingVisit) { visit in
                 EditVisitView(visit: visit)
             }
@@ -186,7 +186,7 @@ private struct EditVisitView: View {
             }
             .navigationTitle("Edit Visit")
             .navigationBarTitleDisplayMode(.inline)
-            .tint(.primaryBlue)
+            .tint(.forestGreen)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
