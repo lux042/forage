@@ -29,7 +29,7 @@ struct ExploreView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Find your next favorite")
                             .font(.title3.bold())
-                            .foregroundStyle(Color.forestGreen)
+                            .foregroundStyle(Color.forageHeading)
                         Text("A little exploring goes a long way.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
@@ -52,7 +52,7 @@ struct ExploreView: View {
                         VStack {
                             Spacer()
                             ProgressView("Searching...")
-                                .tint(.forestGreen)
+                                .tint(Color.forageAction)
                             Spacer()
                         }
                     } else if searchService.results.isEmpty {
@@ -68,7 +68,7 @@ struct ExploreView: View {
             }
             .background(Color.backgroundSoft.ignoresSafeArea())
             .navigationTitle("Explore")
-            .tint(.forestGreen)
+            .tint(Color.forageAction)
             .searchable(text: $query, prompt: "Name, cuisine, or neighborhood")
             .onSubmit(of: .search) {
                 Task {
@@ -107,7 +107,7 @@ struct ExploreView: View {
                 )
 
                 Marker(result.name, coordinate: coordinate)
-                    .tint(.forestGreen)
+                    .tint(Color.forageAction)
             }
         }
         .mapControls {
@@ -120,7 +120,7 @@ struct ExploreView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 24)
-                .stroke(Color.forestGreen.opacity(0.08), lineWidth: 1)
+                .stroke(Color.forageSage.opacity(0.3), lineWidth: 1)
         )
         .padding(.horizontal, 12)
         .padding(.top, 8)
@@ -155,12 +155,12 @@ struct ExploreView: View {
 
                         ZStack {
                             Circle()
-                                .fill(isSaved(result) ? Color.accentGold.opacity(0.18) : Color.forestGreen.opacity(0.08))
+                                .fill(isSaved(result) ? Color.accentGold.opacity(0.18) : Color.forageSage.opacity(0.3))
                                 .frame(width: 40, height: 40)
 
                             Image(systemName: isSaved(result) ? "star.fill" : "star")
                                 .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(isSaved(result) ? Color.accentGold : Color.forestGreen)
+                                .foregroundStyle(isSaved(result) ? Color.accentGold : Color.forageHeading)
                                 .scaleEffect(animatingKeys.contains(key) ? 1.28 : 1.0)
                                 .animation(.spring(response: 0.28, dampingFraction: 0.45), value: animatingKeys.contains(key))
                         }
@@ -171,6 +171,7 @@ struct ExploreView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .environment(\.defaultMinListRowHeight, 62)
         .scrollContentBackground(.hidden)
         .background(Color.backgroundSoft)
     }
