@@ -76,7 +76,7 @@ struct SavedView: View {
 
     private func monitoringRow(for restaurant: Restaurant) -> some View {
         let isActive = geofenceManager.isMonitoring(restaurant)
-        let isEnabled = restaurant.monitoringEnabled
+        let isEnabled = restaurant.isMonitoringEnabled
 
         return Button {
             toggleMonitoring(restaurant)
@@ -84,7 +84,7 @@ struct SavedView: View {
             Text(statusText(isActive: isActive, isEnabled: isEnabled))
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(statusColor(isActive: isActive, isEnabled: isEnabled))
-                .scaleEffect(restaurant.monitoringEnabled ? 1.0 : 0.96)
+                .scaleEffect(restaurant.isMonitoringEnabled ? 1.0 : 0.96)
                 .animation(.easeInOut(duration: 0.15), value: restaurant.monitoringEnabled)
         }
         .buttonStyle(.plain)
@@ -92,11 +92,11 @@ struct SavedView: View {
 
     private func toggleMonitoring(_ restaurant: Restaurant) {
         do {
-            restaurant.monitoringEnabled.toggle()
+            restaurant.monitoringEnabled = !restaurant.isMonitoringEnabled
             try modelContext.save()
 
             GeofenceManager.shared.refreshGeofences(userLocation: nil)
-            print("Toggled monitoring:", restaurant.name, restaurant.monitoringEnabled)
+            print("Toggled monitoring:", restaurant.name, restaurant.isMonitoringEnabled)
         } catch {
             print("Failed to toggle monitoring:", error)
         }
