@@ -118,11 +118,41 @@ final class GeofenceManager: NSObject, ObservableObject, CLLocationManagerDelega
         do {
             let restaurants = try modelContext.fetch(FetchDescriptor<Restaurant>())
 
-            if let match = restaurants.first(where: {
+            guard let match = restaurants.first(where: {
                 $0.id.uuidString == region.identifier
-            }) {
-                notificationManager.sendNearbyNotification(for: match)
+            }) else {
+                print("🔔 No saved restaurant matches geofence:", region.identifier)
+                return
             }
+
+            guard match.isMonitoringEnabled else {
+                print("🔔 Alerts disabled for:", match.name)
+                return
+            }
+
+            let now = Date()
+            let cooldown = AlertSettings.cooldownHours * 60 * 60
+
+            if let lastAlertedAt = match.lastAlertedAt,
+               now.timeIntervalSince(lastAlertedAt) < cooldown {
+                print("🔕 Cooldown active for:", match.name)
+                return
+            }
+
+            // Persist before scheduling so repeated region events cannot spam alerts.
+            let previousAlertDate = match.lastAlertedAt
+            match.lastAlertedAt = now
+
+            do {
+                try modelContext.save()
+            } catch {
+                match.lastAlertedAt = previousAlertDate
+                print("🔔 Could not save alert cooldown for \(match.name): \(error)")
+                return
+            }
+
+            notificationManager.sendNearbyNotification(for: match)
+            print("🔔 Geofence alert requested for:", match.name)
         } catch {
             print("Geofence lookup error:", error)
         }
